@@ -11,7 +11,7 @@ import java.util.Map;
 public class Uservalidator implements Validator<User> {
 
     @Override
-    public void validate(User user){
+    public void validate(User user) {
         checkUserName(user);
     }
 
