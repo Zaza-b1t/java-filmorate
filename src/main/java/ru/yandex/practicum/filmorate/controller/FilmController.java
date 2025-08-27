@@ -22,7 +22,7 @@ import java.util.Map;
 public class FilmController {
 
     private final Map<Long, Film> films = new HashMap<>();
-    Filmvalidator filmvalidator = new Filmvalidator();
+    private final Filmvalidator filmvalidator = new Filmvalidator();
 
     @GetMapping
     public Collection<Film> findAll() {

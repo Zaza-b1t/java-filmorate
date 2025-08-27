@@ -24,7 +24,7 @@ public class UserController {
 
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
-        log.info("Создание пользователя");
+        log.info("Создание пользователя с логином: {}", user.getLogin());
         uservalidator.validate(user);
         user.setId(getNextId());
         users.put(user.getId(), user);

@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.validator;
 
+import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -22,7 +23,7 @@ public class Uservalidator implements Validator<User> {
     }
 
     private void checkUserName(User user) {
-        if (user.getName() == null || user.getName().isBlank()) {
+        if (StringUtils.isBlank(user.getName())) {
             user.setName(user.getLogin());
             log.info("Имя пользователя пустое, будет использован логин");
         }
