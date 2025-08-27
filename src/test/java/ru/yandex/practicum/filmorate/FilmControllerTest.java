@@ -20,22 +20,14 @@ class FilmControllerTest {
 	@Test
 	void shouldValidateCorrectFilm() {
 		Film film = new Film(1L, "Титаник", "Описание",
-				LocalDate.of(2000, 1, 1), Duration.ofMinutes(120));
+				LocalDate.of(2000, 1, 1), 120);
 		assertDoesNotThrow(() -> filmvalidator.validate(film));
 	}
 
 	@Test
 	void shouldFailIfReleaseDateTooEarly() {
 		Film film = new Film(null, "Название", "Описание",
-				LocalDate.of(1800, 1, 1), Duration.ofMinutes(90));
-
-		assertThrows(ValidationException.class, () -> filmvalidator.validate(film));
-	}
-
-	@Test
-	void shouldFailIfDurationNegative() {
-		Film film = new Film(null, "Название", "Описание",
-				LocalDate.of(2000, 1, 1), Duration.ofMinutes(-100));
+				LocalDate.of(1800, 1, 1), 90);
 
 		assertThrows(ValidationException.class, () -> filmvalidator.validate(film));
 	}
@@ -43,7 +35,7 @@ class FilmControllerTest {
 	@Test
 	void shouldFailIfIdNullInUpdate() {
 		Film film = new Film(null, "Название", "Описание",
-				LocalDate.of(2000, 1, 1), Duration.ofMinutes(90));
+				LocalDate.of(2000, 1, 1), 90);
 
 		assertThrows(ValidationException.class,
 				() -> filmvalidator.validate(film, new HashMap<>()));
@@ -52,7 +44,7 @@ class FilmControllerTest {
 	@Test
 	void shouldFailIfIdNotExistsInUpdate() {
 		Film film = new Film(99L, "Название", "Описание",
-				LocalDate.of(2000, 1, 1), Duration.ofMinutes(90));
+				LocalDate.of(2000, 1, 1), 90);
 
 		Map<Long, Film> films = new HashMap<>();
 		films.put(1L, film);

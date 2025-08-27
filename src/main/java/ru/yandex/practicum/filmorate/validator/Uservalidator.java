@@ -22,14 +22,14 @@ public class Uservalidator implements Validator<User> {
         checkExists(user.getId(), users);
     }
 
-    private void checkUserName (User user) {
+    private void checkUserName(User user) {
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
             log.info("Имя пользователя пустое, будет использован логин");
         }
     }
 
-    private void checkIdNotNull (Long id) {
+    private void checkIdNotNull(Long id) {
         if (id == null) {
             log.error("Ошибка валидации: ID не может быть null");
             throw new ValidationException("ID не может быть null");

@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User addUser (@Valid @RequestBody User user) {
+    public User addUser(@Valid @RequestBody User user) {
         log.info("Создание пользователя");
         uservalidator.validate(user);
         user.setId(getNextId());
@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @PutMapping
-    public User updateUser (@Valid @RequestBody User user) {
+    public User updateUser(@Valid @RequestBody User user) {
         log.info("Обновляем пользователя с ID = {}", user.getId());
         uservalidator.validate(user,users);
         users.put(user.getId(), user);

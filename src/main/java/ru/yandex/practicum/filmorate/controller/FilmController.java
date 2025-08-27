@@ -25,12 +25,12 @@ public class FilmController {
     Filmvalidator filmvalidator = new Filmvalidator();
 
     @GetMapping
-    public Collection<Film> findAll () {
+    public Collection<Film> findAll() {
         return films.values();
     }
 
     @PostMapping
-    public Film addFilm (@Valid @RequestBody Film film) {
+    public Film addFilm(@Valid @RequestBody Film film) {
         log.info("Добавление фильма: {}",film);
         filmvalidator.validate(film);
         film.setId(getNextId());
@@ -40,7 +40,7 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film updateFilm (@Valid @RequestBody Film film) {
+    public Film updateFilm(@Valid @RequestBody Film film) {
         log.info("Обновляем фильм с ID = {}", film.getId());
         filmvalidator.validate(film, films);
         films.put(film.getId(), film);

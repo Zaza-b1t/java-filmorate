@@ -22,14 +22,14 @@ public class Filmvalidator implements Validator<Film> {
         checkExists(film.getId(), films);
     }
 
-    private void checkReleaseDate (LocalDate date) {
+    private void checkReleaseDate(LocalDate date) {
         if (date.isBefore(LocalDate.of(1895,12,28))) {
             log.error("Ошибка валидации: дата релиза не может быть раньше 28 декабря 1895 года");
             throw new ValidationException("Дата релиза не может быть раньше 28 декабря 1895 года.");
         }
     }
 
-    private void checkIdNotNull (Long id) {
+    private void checkIdNotNull(Long id) {
         if (id == null) {
             log.error("Ошибка валидации: ID не может быть null");
             throw new ValidationException("ID не может быть null");
