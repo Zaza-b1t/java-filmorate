@@ -44,7 +44,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public boolean isFriend(Long userId, Long friendId) {
         User user = users.get(userId);
-        if(user == null) {
+        if (user == null) {
             return false;
         }
         return user.getFriends().contains(friendId);
