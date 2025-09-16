@@ -31,10 +31,10 @@ public class FilmController {
 
     @PostMapping
     public Film addFilm(@Valid @RequestBody Film film) {
-        log.info("Добавление фильма: {}", film);
+        log.info("Добавление фильма: {}", film.getName());
         filmValidator.validate(film);
         filmService.addFilm(film);
-        log.info("Фильм успешно добавлен: {}", film);
+        log.info("Фильм успешно добавлен: {}", film.getName());
         return film;
     }
 

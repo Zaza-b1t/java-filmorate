@@ -59,13 +59,10 @@ public class UserServiceImpl implements UserService {
         User user   = getUserById(userId);
         User friend = getUserById(friendId);
 
-        if (user.getFriends().contains(friendId)) {
-            throw new ValidationException("Пользователь уже в друзьях.");
+        if(!userStorage.isFriend(userId,friendId)) {
+            user.getFriends().add(friendId);
+            friend.getFriends().add(userId);
         }
-
-        user.getFriends().add(friendId);
-        friend.getFriends().add(userId);
-
         userStorage.updateUser(user);
         userStorage.updateUser(friend);
     }
@@ -90,11 +87,8 @@ public class UserServiceImpl implements UserService {
     public Collection<User> getFriends(Long userId) {
         User user = getUserById(userId);
         Set<Long> friendIds = user.getFriends();
-        Set<User> friends = new HashSet<>();
-        for (Long friendId : friendIds) {
-            friends.add(getUserById(friendId)); // Получаем пользователя по ID
-        }
-        return friends;
+        Collection<User> friends = userStorage.getUsersByIds(friendIds);
+        return new HashSet<>(friends);
     }
 
     @Override
@@ -105,12 +99,9 @@ public class UserServiceImpl implements UserService {
         Set<Long> commonIds = new HashSet<>(u1.getFriends());
         commonIds.retainAll(u2.getFriends());
 
-        Set<User> commonFriends = new HashSet<>();
-        for (Long id : commonIds) {
-            commonFriends.add(getUserById(id));
-        }
+        Collection<User> commonUsers = userStorage.getUsersByIds(commonIds);
 
-        return commonFriends;
+        return new HashSet<>(commonUsers);
     }
 
     private void ensureUserExists(Long id) {
