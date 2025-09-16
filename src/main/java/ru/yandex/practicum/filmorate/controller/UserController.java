@@ -71,5 +71,6 @@ public class UserController {
         log.info("Получение общих друзей пользователя {} и {}", userId, otherId);
         return userService.getCommonFriends(userId, otherId);
     }
+
 }
 
