@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.validator;
 
 import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -9,6 +10,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.Map;
 
 @Slf4j
+@Component
 public class Uservalidator implements Validator<User> {
 
     @Override
