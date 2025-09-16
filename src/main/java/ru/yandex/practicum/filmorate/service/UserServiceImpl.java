@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         User user   = getUserById(userId);
         User friend = getUserById(friendId);
 
-        if(!userStorage.isFriend(userId,friendId)) {
+        if (!userStorage.isFriend(userId,friendId)) {
             user.getFriends().add(friendId);
             friend.getFriends().add(userId);
         }
