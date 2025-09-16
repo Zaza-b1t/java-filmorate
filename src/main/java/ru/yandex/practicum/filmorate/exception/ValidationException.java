@@ -1,7 +1,9 @@
 package ru.yandex.practicum.filmorate.exception;
 
-public class ValidationException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class ValidationException extends AbstractDtoException {
     public ValidationException(String message) {
-        super(message);
+        super(message, HttpStatus.BAD_REQUEST);
     }
 }
