@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class InMemoryUserStorage implements UserStorage{
+public class InMemoryUserStorage implements UserStorage {
     private final Map<Long,User> users = new HashMap<>();
 
     @Override
@@ -36,6 +36,7 @@ public class InMemoryUserStorage implements UserStorage{
     public User getUserById(Long userId) {
        return users.get(userId);
     }
+
     @Override
     public Collection<User> getAllUsers() {
         return users.values();
