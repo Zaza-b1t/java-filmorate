@@ -37,8 +37,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Long userId) {
-        User user = userStorage.getUserById(userId);
+    public User getUserById(Long id) {
+        User user = userStorage.getUserById(id);
         if (user == null) {
             throw new EntityNotFoundException("Пользователь с таким ID не найден.");
         }
