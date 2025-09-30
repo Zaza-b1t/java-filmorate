@@ -9,9 +9,6 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Film.
- */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -30,4 +27,6 @@ public class Film {
     private int duration;
     private int likeCount;
     private Set<Long> likedByUsers = new HashSet<>();
+    Set<String> genres;
+    String mpa;
 }
