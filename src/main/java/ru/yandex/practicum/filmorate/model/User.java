@@ -22,4 +22,11 @@ public class User {
     private String name;
     @PastOrPresent
     private LocalDate birthday;
+<<<<<<< HEAD
+=======
+
+    private Set<Long> friends = new HashSet<>();
+
+    private Set<Friendship> friendships = new HashSet<>();
+>>>>>>> 4a82a1a (feat(fz11): реализованы лайки и дружба без БД)
 }
