@@ -6,8 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,8 +24,6 @@ public class Film {
 
     @Positive
     private int duration;
-    private int likeCount;
-    private Set<Long> likedByUsers = new HashSet<>();
-    Set<String> genres;
-    String mpa;
+    Mpa mpa;
+    private List<Genre> genres = new ArrayList<>();
 }
