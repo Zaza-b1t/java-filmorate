@@ -42,20 +42,31 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public boolean isFriend(Long userId, Long friendId) {
-        User user = users.get(userId);
-        if (user == null) {
-            return false;
-        }
-        return user.getFriends().contains(friendId);
-    }
-
-    @Override
     public Collection<User> getUsersByIds(Collection<Long> userIds) {
         return userIds.stream()
                 .map(users::get)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addFriend(Long userId, Long friendId) {
+
+    }
+
+    @Override
+    public void removeFriend(Long userId, Long friendId) {
+
+    }
+
+    @Override
+    public Collection<User> getFriends(Long userId) {
+        return List.of();
+    }
+
+    @Override
+    public Collection<User> getCommonFriends(Long userId, Long otherUserId) {
+        return List.of();
     }
 
 

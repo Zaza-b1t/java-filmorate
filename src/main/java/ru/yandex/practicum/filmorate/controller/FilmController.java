@@ -64,4 +64,9 @@ public class FilmController {
         log.info("Запрос популярных фильмов, ограничено количеством: {}", count);
         return filmService.listOfFilms(count);
     }
+
+    @GetMapping("/{filmId}")
+    public Film getFilmById(@PathVariable Long filmId) {
+        return filmService.getFilmById(filmId);
+    }
 }

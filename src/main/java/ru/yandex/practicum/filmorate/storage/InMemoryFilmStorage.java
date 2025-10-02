@@ -3,13 +3,12 @@ package ru.yandex.practicum.filmorate.storage;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Long, Film> films = new HashMap<>();
+    private final Map<Long, Set<Long>> likes = new HashMap<>();
 
 
     @Override
@@ -36,6 +35,27 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Collection<Film> getAllFilms() {
         return films.values();
+    }
+
+    @Override
+    public void addLike(Long filmId, Long userId) {
+        likes.computeIfAbsent(filmId, k -> new HashSet<>()).add(userId);
+    }
+
+    @Override
+    public void deleteLike(Long filmId, Long userId) {
+        likes.computeIfAbsent(filmId, k -> new HashSet<>()).remove(userId);
+    }
+
+    @Override
+    public Collection<Film> getPopular(int count) {
+        return films.values().stream()
+                .sorted((a,b) -> Integer.compare(
+                        likes.getOrDefault(b.getId(), Set.of()).size(),
+                        likes.getOrDefault(a.getId(), Set.of()).size()
+                ))
+                .limit(count)
+                .toList();
     }
 
     private long getNextId() {

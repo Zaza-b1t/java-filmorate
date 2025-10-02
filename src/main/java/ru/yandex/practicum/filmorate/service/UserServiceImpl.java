@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -7,15 +8,13 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserStorage userStorage;
 
-    public UserServiceImpl(UserStorage userStorage) {
+    public UserServiceImpl(@Qualifier("userDbStorage") UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
@@ -38,11 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long id) {
-        User user = userStorage.getUserById(id);
-        if (user == null) {
-            throw new EntityNotFoundException("Пользователь с таким ID не найден.");
-        }
-        return user;
+        var u = userStorage.getUserById(id);
+        if (u == null) throw new EntityNotFoundException("Пользователь с таким ID не найден.");
+        return u;
     }
 
     @Override
@@ -55,53 +52,30 @@ public class UserServiceImpl implements UserService {
         if (userId.equals(friendId)) {
             throw new ValidationException("Нельзя добавить в друзья самого себя.");
         }
+        getUserById(userId);
+        getUserById(friendId);
 
-        User user   = getUserById(userId);
-        User friend = getUserById(friendId);
-
-        if (!userStorage.isFriend(userId,friendId)) {
-            user.getFriends().add(friendId);
-            friend.getFriends().add(userId);
-        }
-        userStorage.updateUser(user);
-        userStorage.updateUser(friend);
+        userStorage.addFriend(userId, friendId);
     }
 
     @Override
     public void removeFriend(Long userId, Long friendId) {
-        User user   = getUserById(userId);
-        User friend = getUserById(friendId);
-
-        if (!user.getFriends().contains(friendId)) {
-            return;
-        }
-
-        user.getFriends().remove(friendId);
-        friend.getFriends().remove(userId);
-
-        userStorage.updateUser(user);
-        userStorage.updateUser(friend);
+        getUserById(userId);
+        getUserById(friendId);
+        userStorage.removeFriend(userId, friendId);
     }
 
     @Override
     public Collection<User> getFriends(Long userId) {
-        User user = getUserById(userId);
-        Set<Long> friendIds = user.getFriends();
-        Collection<User> friends = userStorage.getUsersByIds(friendIds);
-        return new HashSet<>(friends);
+        getUserById(userId);
+        return userStorage.getFriends(userId);
     }
 
     @Override
     public Collection<User> getCommonFriends(Long userId, Long friendId) {
-        User u1 = getUserById(userId);
-        User u2 = getUserById(friendId);
-
-        Set<Long> commonIds = new HashSet<>(u1.getFriends());
-        commonIds.retainAll(u2.getFriends());
-
-        Collection<User> commonUsers = userStorage.getUsersByIds(commonIds);
-
-        return new HashSet<>(commonUsers);
+        getUserById(userId);
+        getUserById(friendId);
+        return userStorage.getCommonFriends(userId, friendId);
     }
 
     private void ensureUserExists(Long id) {
