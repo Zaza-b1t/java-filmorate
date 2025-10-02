@@ -1,9 +1,7 @@
 package ru.yandex.practicum.filmorate.exception;
 
-import org.springframework.http.HttpStatus;
-
-public class EntityNotFoundException extends AbstractDtoException {
+public class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException(String message) {
-        super(message, HttpStatus.NOT_FOUND);
+        super(message);
     }
 }
