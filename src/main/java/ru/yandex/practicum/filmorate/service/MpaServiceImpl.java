@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Mpa;
@@ -7,6 +8,7 @@ import ru.yandex.practicum.filmorate.storage.MpaStorage;
 
 import java.util.Collection;
 
+@Slf4j
 @Service
 public class MpaServiceImpl implements MpaService {
 
@@ -18,11 +20,17 @@ public class MpaServiceImpl implements MpaService {
 
     @Override
     public Collection<Mpa> getAll() {
-        return mpaStorage.getAll();
+        log.info("Получение списка всех MPA рейтингов");
+        Collection<Mpa> mpa = mpaStorage.getAll();
+        log.debug("Кол-во MPA рейтингов: {}", mpa.size());
+        return mpa;
     }
 
     @Override
     public Mpa getById(int id) {
-        return mpaStorage.getById(id);
+        log.info("Получение MPA рейтинга: id={}", id);
+        Mpa mpa = mpaStorage.getById(id);
+        log.debug("MPA рейтинг найден: id={}, name={}", mpa.getId(), mpa.getName());
+        return mpa;
     }
 }

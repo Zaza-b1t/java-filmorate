@@ -17,6 +17,8 @@ import java.sql.Statement;
 import java.util.Collection;
 import java.util.List;
 
+import static java.util.Collections.nCopies;
+
 @Repository
 @Qualifier("filmDbStorage")
 public class FilmDbStorage implements FilmStorage {
@@ -178,12 +180,26 @@ public class FilmDbStorage implements FilmStorage {
         if (cnt == null || cnt == 0) throw new EntityNotFoundException("Рейтинг MPA id=" + mpaId + " не найден");
     }
 
+
     private void ensureGenresExist(List<Genre> genres) {
-        if (genres == null) return;
-        for (Genre g : genres) {
-            Integer cnt = jdbc.queryForObject("SELECT COUNT(*) FROM genres WHERE id=?", Integer.class, g.getId());
-            if (cnt == null || cnt == 0) throw new EntityNotFoundException("Жанр id=" + g.getId() + " не найден");
+        if (genres == null || genres.isEmpty()) return;
+
+        List<Integer> ids = genres.stream()
+                .map(Genre::getId)
+                .distinct()
+                .toList();
+
+        String placeholders = String.join(",", nCopies(ids.size(), "?"));
+        String sql = "SELECT id FROM genres WHERE id IN (" + placeholders + ")";
+
+        List<Integer> existing = jdbc.queryForList(sql, Integer.class, ids.toArray());
+
+        if (existing.size() != ids.size()) {
+            var existingSet = new java.util.HashSet<>(existing);
+            List<Integer> missing = ids.stream()
+                    .filter(i -> !existingSet.contains(i))
+                    .toList();
+            throw new EntityNotFoundException("Жанры не найдены: " + missing);
         }
     }
-
 }
